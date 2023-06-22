@@ -36,3 +36,143 @@
     transform: rotate(360deg);
   }
 }
+
+.Setup-header{
+  font-size: 50px;
+  min-height: 10vh;
+  display: flex;
+  justify-content: center;
+  background: aliceblue;
+}
+
+.step-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.step-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+  position: relative;
+}
+
+.step-item:not(:first-child):not(:last-child)::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-top: 2px dashed #bbb;
+}
+
+.step-item:first-child::before {
+    content: "";
+    position: absolute;
+    top: 14px;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    border-top: 2px dashed #bbb;
+}
+
+.step-item:last-child::before {
+    content: "";
+    position: absolute;
+    top: 14px;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    border-top: 2px dashed #bbb;
+}
+
+.step-circle {
+  height: 30px;
+  width: 30px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.step-circle.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.step-line {
+  flex-grow: 1;
+  margin-left: 20px;
+  margin-right: 20px;
+  position: absolute;
+  width: 100%;
+}
+
+form {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+input {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid black;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+select{
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  border-radius: 4px;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+textarea {
+  width: calc(100% - 6px);
+  height: 70px;
+  border-radius: 4px;
+}
+
+label {
+  line-height: 0.5;
+  text-align: left;
+  display: block;
+  margin-bottom: 13px;
+  margin-top: 20px;
+  color: black;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.button-setup{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  margin-right: auto;
+  margin-left: auto;
+  width: 70vh;
+}
+
+.next-button-color{
+  color: #ffffff;
+  background: #454545;
+  border-radius: 6px;
+  height: 30px;
+  width: 80px;
+}
