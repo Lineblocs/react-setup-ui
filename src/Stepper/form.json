@@ -1,0 +1,279 @@
+[
+    {
+        "id"     : 1,
+        "title"  : "Step 1",
+        "description": "Please let us know how Lineblocs should storage data.",
+        "note": "Note: Lineblocs will use your storage provider to save text to speech files, user media files, and recordings.",
+        "forms"  : [
+            {
+                "label": "Storage Provider",
+                "name" : "storage_provider",
+                "type" : "dropdown",
+                "required": true,
+                "options": [
+                    {
+                        "label": "AWS",
+                        "value": "Amazon S3"
+                    },
+                    {
+                        "label": "GCS",
+                        "value": "Google Cloud Storage"
+                    },
+                    {
+                        "label": "Microsoft Azure",
+                        "value": "AZURE"
+                    }
+                ]
+            },
+            {
+                "label": "AWS access Key",
+                "name" : "aws_access_key",
+                "type" : "password",
+                "required": true,
+                "validation": {
+                    "min": 2,
+                    "max": 16
+                },
+                "defaultValue": "dsfdsfsd"
+            },
+            {
+                "label": "AWS secret access Key",
+                "name" : "aws_secret_access_key",
+                "type" : "password",
+                "required": true,
+                "validation": {
+                    "min": 2,
+                    "max": 16
+                },
+                "defaultValue": "dsfdsfsd"
+            },
+            {
+                "label": "AWS region",
+                "name" : "aws_region",
+                "type" : "dropdown",
+                "required": true,
+                "options": [
+                    {
+                        "label": "US East (N. Virginia)",
+                        "value": "us-east-1"
+                    },
+                    {
+                        "label": "US East (Ohio)",
+                        "value": "us-east-2"
+                    },
+                    {
+                        "label": "US West (N. California)",
+                        "value": "us-west-1"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id"     : 2,
+        "title"  : "Step 2",
+        "description": "Setup SMTP details for emails.",
+        "forms"  : [
+            {
+                "label": "Host",
+                "name" : "host",
+                "type" : "text",
+                "required": true,
+                "validation": {
+                    "min": 2,
+                    "max": 10
+                },
+                "defaultValue": "example"
+            },
+            {
+                "label": "User",
+                "name" : "user",
+                "type" : "text",
+                "required": true,
+                "validation": {
+                    "min": 2,
+                    "max": 100
+                },
+                "defaultValue": "hello"
+            },
+            {
+                "label": "Password",
+                "name" : "password",
+                "type" : "password",
+                "required": true,
+                "validation": {
+                    "min": 2,
+                    "max": 10
+                },
+                "defaultValue": "dsfdsf"
+            },
+            {
+                "label": "TLS",
+                "name" : "tls",
+                "type" : "dropdown",
+                "required": true,
+                "options": [
+                    {
+                        "label": "On",
+                        "value": "on"
+                    },
+                    {
+                        "label": "Off",
+                        "value": "off"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id"     : 3,
+        "title"  : "Step 3",
+        "description"   : "Please select a text-to-speech engine.",
+        "forms"  : [
+            {
+                "label": "Select provider",
+                "name" : "provider",
+                "type" : "dropdown",
+                "required": true,
+                "options": [
+                    {
+                        "label": "Google cloud speech",
+                        "value": "google"
+                    },
+                    {
+                        "label": "Amazon Polly",
+                        "value": "amazon"
+                    },{
+                        "label": "IBM Watson",
+                        "value": "ibm"
+                    }
+                ]
+            },
+            {
+                "label": "Google service account JSON",
+                "name" : "google_service_account_json",
+                "type" : "textarea",
+                "required": true,
+                "validation": {
+                    "min": 2,
+                    "max": 100
+                },
+                "defaultValue": "1111"
+            }
+        ]
+    },
+    {
+        "id"     : 4,
+        "title"  : "Step 4",
+        "description": "Below you can configure your stripe account. It will be used to process payments.",
+        "forms"  : [
+            {
+                "label": "Stripe Private Key",
+                "name" : "stripe_private_key",
+                "type" : "password",
+                "required": true,
+                "validation": {
+                    "min": 2,
+                    "max": 12
+                },
+                "defaultValue": "gcgdghfdhf"
+            },
+            {
+                "label": "Stripe Publishable Key",
+                "name" : "stripe_publishable_key",
+                "type" : "password",
+                "required": true,
+                "validation": {
+                    "min": 2,
+                    "max": 12
+                },
+                "defaultValue": "cvgdfghfghg"
+            },
+            {
+                "label": "Stripe Test Private Key",
+                "name" : "stripe_test_private_key",
+                "type" : "password",
+                "required": true,
+                "validation": {
+                    "min": 2,
+                    "max": 12
+                },
+                "defaultValue": "hgfhdagfh"
+            },
+            {
+                "label": "Stripe Test Publishable Key",
+                "name" : "stripe_test_publishable_key",
+                "type" : "password",
+                "required": true,
+                "validation": {
+                    "min": 2,
+                    "max": 12
+                },
+                "defaultValue": "fghhgffhfg"
+            }
+        ]
+    },
+    {
+        "id"     : 5,
+        "title"  : "Step 5",
+        "description": "Create admin user.",
+        "forms"  : [
+            {
+                "label": "Email",
+                "name" : "email",
+                "type" : "email",
+                "required": {
+                    "value": true,
+                    "message": "This is required"
+                },
+                "validation": {
+                    "pattern": {
+                        "value": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$",
+                        "message": "Invalid email address"
+                    }
+                },
+                "defaultValue": "abc@gmail.com"
+            },
+            {
+                "label": "Password",
+                "name" : "password",
+                "type" : "password",
+                "required": true,
+                "validation": {
+                    "min": 2,
+                    "max": 10
+                },
+                "defaultValue": "admin!23"
+            },
+            {
+                "label": "Confirm Password",
+                "name" : "confirm_password",
+                "type" : "password",
+                "required": true,
+                "validation": {
+                    "min": 2,
+                    "max": 10
+                },
+                "defaultValue": "admin!23"
+            }
+        ]
+    },
+    {
+        "id"     : 6,
+        "title"  : "Step 6",
+        "description": "UI customizations.",
+        "forms"  : [
+            {
+                "label": "Company name",
+                "name" : "company_name",
+                "type" : "text",
+                "required": false,
+                "validation": {
+                    "min": 2,
+                    "max": 100
+                },
+                "defaultValue": "ACME inc/"
+            }
+        ]
+    }
+]
