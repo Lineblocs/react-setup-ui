@@ -3,96 +3,81 @@ import { useForm } from 'react-hook-form';
 import './Stepper.css';
 import stepsData from'./form.json';
 import logo from './../images/new-logo-blue.png';
-import { ReactComponent as RightChevron } from './../icons/right-chevron.svg';
 import { ReactComponent as LeftChevron } from './../icons/left-chevron.svg';
 import { ReactComponent as EditIcon } from './../icons/edit-icon.svg';
 
 function Step({ step, currentStep, form, register, errors, handleSubmit, onSubmit }) {
   return step === currentStep ? (
-    <>
-      <h2 className='title-center'>{form.title}</h2>
-      <p className='title-center'>{form.description}</p>
-      {form.note && <p className='note-storage'>{form.note}</p>}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {form.forms && form.forms.map(({ label, name, type, required, validation, defaultValue, options }) => {
-          switch (type) {
-            case 'text':
+      <>
+        <h2 className='title-center'>{form.title}</h2>
+        <p className='title-center'>{form.description}</p>
+        {form.note && <p className='note-storage'>{form.note}</p>}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {form.forms.map((field, index) => {
             return (
-                <div key={name}>
-                    <label>{label}{required && <span style={{ color: 'red' }}>*</span>}</label>
-                    <input
-                        name={name}
-                        type={type}
-                        defaultValue={defaultValue}
-                        {...register(name, { required })}
-                    />
-                    {errors && errors[name] && <p className='error-msg'>This field is required</p>}
-                </div>
-            );
-            case 'email':
-              return (
-                <div key={name}>
-                  <label>{label}{required && <span style={{ color: 'red' }}>*</span>}</label>
-                  <input
-                    name={name}
-                    type={type}
-                    defaultValue={defaultValue}
-                    {...register(name, { required, ...validation, pattern: validation.pattern && {
-                      value: new RegExp(validation.pattern.value),
-                      message: validation.pattern.message
-                    }
+              <div key={index}>
+                <label>{field.label}{field.required && <span style={{ color: 'red' }}>*</span>}</label>
+                <div style={field.fields.length > 1 ? { display: 'flex', gap: '12px' } : {}}>
+                  {field.fields.map((nestedField, nestedIndex) => {
+                    return (
+                      <div key={nestedIndex} style={{ flexBasis: '50%' }}>
+                        {generateFormField(nestedField, register, errors, nestedField.name)}
+                      </div>
+                    );
                   })}
-                  />
-                  {errors && errors[name] && <p className='error-msg'>{errors[name].message}</p>}
                 </div>
-              );
-            case 'password':
-              return (
-                  <div key={name}>
-                      <label>{label}{required && <span style={{ color: 'red' }}>*</span>}</label>
-                      <input
-                          name={name}
-                          type={type}
-                          defaultValue={defaultValue}
-                          {...register(name, { required, minLength: validation.min, maxLength: validation.max })}
-                      />
-                      {errors && errors[name] && <p className='error-msg'>This field is required with min {validation.min} and max {validation.max} characters</p>}
-                  </div>
-              );
-            case 'dropdown':
-              return (
-                <div key={name}>
-                  <label>{label}{required && <span style={{ color: 'red' }}>*</span>}</label>
-                  <select name={name} {...register(name, { required })}>
-                    {options.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                  {errors && errors[name] && <p className='error-msg'>This field is required</p>}
-                </div>
-              );
-            case 'textarea':
-              return (
-                  <div key={name}>
-                      <label>{label}{required && <span style={{ color: 'red' }}>*</span>}</label>
-                      <textarea
-                          name={name}
-                          defaultValue={defaultValue}
-                          {...register(name, { required, minLength: validation.min, maxLength: validation.max })}
-                      />
-                      {errors && errors[name] && <p className='error-msg'>This field is required with min {validation.min} and max {validation.max} characters</p>}
-                  </div>
-              );
-            default:
-              return null;
-          }
-        })}
-      </form>
-    </>
+              </div>
+            );
+          })}
+        </form>
+      </>
   ) : null;
 }
+
+const generateFormField = (nestedField, register, errors, fieldName) => {
+  switch (nestedField.type) {
+    case 'text':
+    case 'password':
+    case 'email':
+      return (
+        <div key={fieldName}>
+          <input
+            name={fieldName}
+            type={nestedField.type}
+            defaultValue={nestedField.defaultValue}
+            {...register(fieldName, { required: nestedField.required })}
+          />
+          {errors && errors[fieldName] && <p className='error-msg'>This field is required</p>}
+        </div>
+      );
+    case 'textarea':
+      return (
+        <div key={fieldName}>
+          <textarea
+            name={fieldName}
+            defaultValue={nestedField.defaultValue}
+            {...register(fieldName, { required: nestedField.required, minLength: nestedField.validation.min, maxLength: nestedField.validation.max })}
+          />
+          {errors && errors[fieldName] && <p className='error-msg'>This field is required with min {nestedField.validation.min} and max {nestedField.validation.max} characters</p>}
+        </div>
+      );
+    case 'dropdown':
+      return (
+        <div key={fieldName}>
+          <select name={fieldName} {...register(fieldName, nestedField.validation.required)} defaultValue={nestedField.defaultValue}>
+            {nestedField.options.map((option, index) => (
+              <option key={index} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          {errors && errors[fieldName] && <p className='error-msg'>This field is required</p>}
+        </div>
+      );
+    default:
+      return null;
+  }
+};
 
 
 function Stepper() {
@@ -141,11 +126,11 @@ function Stepper() {
         ))}
       </div>
       <div className='button-setup'>
-        <button disabled={currentStep === 1} className='next-button-color' onClick={prevStep}><LeftChevron /></button>
+        <button disabled={currentStep === 1} className='next-button' onClick={prevStep}><LeftChevron /></button>
         {currentStep < totalSteps ? 
-          <button className='next-button-color' onClick={handleSubmit(nextStep)}><RightChevron /></button> 
+          <button className='next-button' onClick={handleSubmit(nextStep)}>Next</button> 
           : 
-          <button className='next-button-color' type="submit">Submit</button>
+          <button className='next-button' type="submit">Submit</button>
         }
       </div>
     </div>

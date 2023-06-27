@@ -7,63 +7,87 @@
         "forms"  : [
             {
                 "label": "Storage Provider",
-                "name" : "storage_provider",
-                "type" : "dropdown",
                 "required": true,
-                "options": [
+                "fields": [
                     {
-                        "label": "AWS",
-                        "value": "Amazon S3"
-                    },
-                    {
-                        "label": "GCS",
-                        "value": "Google Cloud Storage"
-                    },
-                    {
-                        "label": "Microsoft Azure",
-                        "value": "AZURE"
+                        "type" : "dropdown",
+                        "name" : "storage_provider",
+                        "options": [
+                            {
+                                "label": "AWS",
+                                "value": "Amazon S3"
+                            },
+                            {
+                                "label": "GCS",
+                                "value": "Google Cloud Storage"
+                            },
+                            {
+                                "label": "Microsoft Azure",
+                                "value": "AZURE"
+                            }
+                        ],
+                        "defaultValue": "Amazon S3",
+                        "validation": {
+                            "required": true
+                        }
                     }
                 ]
             },
             {
                 "label": "AWS access Key",
-                "name" : "aws_access_key",
-                "type" : "password",
                 "required": true,
-                "validation": {
-                    "min": 2,
-                    "max": 16
-                },
-                "defaultValue": "dsfdsfsd"
+                "fields": [
+                    {
+                        "type" : "password",
+                        "name" : "aws_access_key",
+                        "validation": {
+                            "min": 2,
+                            "max": 16
+                        },
+                        "defaultValue": "dsfdsfsd"
+                    }
+                ]
             },
             {
                 "label": "AWS secret access Key",
-                "name" : "aws_secret_access_key",
-                "type" : "password",
                 "required": true,
-                "validation": {
-                    "min": 2,
-                    "max": 16
-                },
-                "defaultValue": "dsfdsfsd"
+                "fields": [
+                    {
+                        "type" : "password",
+                        "name" : "aws_secret_access_key",
+                        "validation": {
+                            "min": 2,
+                            "max": 16
+                        },
+                        "defaultValue": "dsfdsfsd"
+                    }
+                ]
             },
             {
                 "label": "AWS region",
-                "name" : "aws_region",
-                "type" : "dropdown",
                 "required": true,
-                "options": [
+                "fields": [
                     {
-                        "label": "US East (N. Virginia)",
-                        "value": "us-east-1"
-                    },
-                    {
-                        "label": "US East (Ohio)",
-                        "value": "us-east-2"
-                    },
-                    {
-                        "label": "US West (N. California)",
-                        "value": "us-west-1"
+                        "type" : "dropdown",
+                        "name" : "aws_region",
+                        "options": [
+                            {
+                                "label": "US East (N. Virginia)",
+                                "value": "us-east-1"
+                            },
+                            {
+                                "label": "US East (Ohio)",
+                                "value": "us-east-2"
+                            },
+                            {
+                                "label": "US West (N. California)",
+                                "value": "us-west-1"
+                            }
+                        ],
+                        "defaultValue": "us-east-1",
+                        "validation": {
+                            "required": true
+                        }
                     }
                 ]
             }
@@ -73,53 +97,74 @@
         "id"     : 2,
         "title"  : "Step 2",
         "description": "Setup SMTP details for emails.",
+        "note": "",
         "forms"  : [
             {
                 "label": "Host",
-                "name" : "host",
-                "type" : "text",
                 "required": true,
-                "validation": {
-                    "min": 2,
-                    "max": 10
-                },
-                "defaultValue": "example"
+                "fields": [
+                    {
+                        "type" : "text",
+                        "name" : "host",
+                        "validation": {
+                            "min": 2,
+                            "max": 10
+                        },
+                        "defaultValue": "example"
+                    }
+                ]
             },
             {
                 "label": "User",
-                "name" : "user",
-                "type" : "text",
                 "required": true,
-                "validation": {
-                    "min": 2,
-                    "max": 100
-                },
-                "defaultValue": "hello"
+                "fields": [
+                    {
+                        "type" : "text",
+                        "name" : "user",
+                        "validation": {
+                            "min": 2,
+                            "max": 100
+                        },
+                        "defaultValue": "hello"
+                    }
+                ]
             },
             {
                 "label": "Password",
-                "name" : "password",
-                "type" : "password",
                 "required": true,
-                "validation": {
-                    "min": 2,
-                    "max": 10
-                },
-                "defaultValue": "dsfdsf"
+                "fields": [
+                    {
+                        "type" : "password",
+                        "name" : "password",
+                        "validation": {
+                            "min": 2,
+                            "max": 10
+                        },
+                        "defaultValue": "dsfdsf"
+                    }
+                ]
             },
             {
                 "label": "TLS",
-                "name" : "tls",
-                "type" : "dropdown",
                 "required": true,
-                "options": [
+                "fields": [
                     {
-                        "label": "On",
-                        "value": "on"
-                    },
-                    {
-                        "label": "Off",
-                        "value": "off"
+                        "type" : "dropdown",
+                        "name" : "tls",
+                        "options": [
+                            {
+                                "label": "On",
+                                "value": "on"
+                            },
+                            {
+                                "label": "Off",
+                                "value": "off"
+                            }
+                        ],
+                        "defaultValue": "on",
+                        "validation": {
+                            "required": true
+                        }
                     }
                 ]
             }
@@ -129,36 +174,49 @@
         "id"     : 3,
         "title"  : "Step 3",
         "description"   : "Please select a text-to-speech engine.",
+        "note": "",
         "forms"  : [
             {
                 "label": "Select provider",
-                "name" : "provider",
-                "type" : "dropdown",
                 "required": true,
-                "options": [
+                "fields": [
                     {
-                        "label": "Google cloud speech",
-                        "value": "google"
-                    },
-                    {
-                        "label": "Amazon Polly",
-                        "value": "amazon"
-                    },{
-                        "label": "IBM Watson",
-                        "value": "ibm"
+                        "type" : "dropdown",
+                        "name" : "provider",
+                        "options": [
+                            {
+                                "label": "Google cloud speech",
+                                "value": "google"
+                            },
+                            {
+                                "label": "Amazon Polly",
+                                "value": "amazon"
+                            },{
+                                "label": "IBM Watson",
+                                "value": "ibm"
+                            }
+                        ],
+                        "defaultValue": "google",
+                        "validation": {
+                            "required": true
+                        }
                     }
                 ]
             },
             {
                 "label": "Google service account JSON",
-                "name" : "google_service_account_json",
-                "type" : "textarea",
                 "required": true,
-                "validation": {
-                    "min": 2,
-                    "max": 100
-                },
-                "defaultValue": "1111"
+                "fields": [
+                    {
+                        "type" : "textarea",
+                        "name" : "google_service_account_json",
+                        "validation": {
+                            "min": 2,
+                            "max": 100
+                        },
+                        "defaultValue": "1111"
+                    }
+                ]
             }
         ]
     },
@@ -166,50 +224,67 @@
         "id"     : 4,
         "title"  : "Step 4",
         "description": "Below you can configure your stripe account. It will be used to process payments.",
+        "note": "",
         "forms"  : [
             {
                 "label": "Stripe Private Key",
-                "name" : "stripe_private_key",
-                "type" : "password",
                 "required": true,
-                "validation": {
-                    "min": 2,
-                    "max": 12
-                },
-                "defaultValue": "gcgdghfdhf"
+                "fields": [
+                    {
+                        "type" : "password",
+                        "name" : "stripe_private_key",
+                        "validation": {
+                            "min": 2,
+                            "max": 12
+                        },
+                        "defaultValue": "gcgdghfdhf"
+                    }
+                ]
             },
             {
                 "label": "Stripe Publishable Key",
-                "name" : "stripe_publishable_key",
-                "type" : "password",
                 "required": true,
-                "validation": {
-                    "min": 2,
-                    "max": 12
-                },
-                "defaultValue": "cvgdfghfghg"
+                "fields": [
+                    {
+                        "type" : "password",
+                        "name" : "stripe_publishable_key",
+                        "validation": {
+                            "min": 2,
+                            "max": 12
+                        },
+                        "defaultValue": "cvgdfghfghg"
+                    }
+                ]
             },
             {
                 "label": "Stripe Test Private Key",
-                "name" : "stripe_test_private_key",
-                "type" : "password",
                 "required": true,
-                "validation": {
-                    "min": 2,
-                    "max": 12
-                },
-                "defaultValue": "hgfhdagfh"
+                "fields": [
+                    {
+                        "type" : "password",
+                        "name" : "stripe_test_private_key",
+                        "validation": {
+                            "min": 2,
+                            "max": 12
+                        },
+                        "defaultValue": "hgfhdagfh"
+                    }
+                ]
             },
             {
                 "label": "Stripe Test Publishable Key",
-                "name" : "stripe_test_publishable_key",
-                "type" : "password",
                 "required": true,
-                "validation": {
-                    "min": 2,
-                    "max": 12
-                },
-                "defaultValue": "fghhgffhfg"
+                "fields": [
+                    {
+                        "type" : "password",
+                        "name" : "stripe_test_publishable_key",
+                        "validation": {
+                            "min": 2,
+                            "max": 12
+                        },
+                        "defaultValue": "fghhgffhfg"
+                    }
+                ]
             }
         ]
     },
@@ -217,44 +292,57 @@
         "id"     : 5,
         "title"  : "Step 5",
         "description": "Create admin user.",
+        "note": "",
         "forms"  : [
             {
                 "label": "Email",
-                "name" : "email",
-                "type" : "email",
                 "required": {
                     "value": true,
                     "message": "This is required"
                 },
-                "validation": {
-                    "pattern": {
-                        "value": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$",
-                        "message": "Invalid email address"
+                "fields": [
+                    {
+                        "type" : "email",
+                        "name" : "email",
+                        "validation": {
+                            "pattern": {
+                                "value": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$",
+                                "message": "Invalid email address"
+                            }
+                        },
+                        "defaultValue": "abc@gmail.com"
                     }
-                },
-                "defaultValue": "abc@gmail.com"
+                ]
             },
             {
                 "label": "Password",
-                "name" : "password",
-                "type" : "password",
                 "required": true,
-                "validation": {
-                    "min": 2,
-                    "max": 10
-                },
-                "defaultValue": "admin!23"
+                "fields": [
+                    {
+                        "type" : "password",
+                        "name" : "password",
+                        "validation": {
+                            "min": 2,
+                            "max": 10
+                        },
+                        "defaultValue": "admin!23"
+                    }
+                ]
             },
             {
                 "label": "Confirm Password",
-                "name" : "confirm_password",
-                "type" : "password",
                 "required": true,
-                "validation": {
-                    "min": 2,
-                    "max": 10
-                },
-                "defaultValue": "admin!23"
+                "fields": [
+                    {
+                        "type" : "password",
+                        "name" : "confirm_password",
+                        "validation": {
+                            "min": 2,
+                            "max": 10
+                        },
+                        "defaultValue": "admin!23"
+                    }
+                ]
             }
         ]
     },
@@ -262,17 +350,171 @@
         "id"     : 6,
         "title"  : "Step 6",
         "description": "UI customizations.",
+        "note": "",
         "forms"  : [
             {
                 "label": "Company name",
-                "name" : "company_name",
-                "type" : "text",
                 "required": false,
-                "validation": {
-                    "min": 2,
-                    "max": 100
-                },
-                "defaultValue": "ACME inc/"
+                "fields":[
+                    {
+                        "type" : "text",
+                        "name" : "company_name",
+                        "validation": {
+                            "min": 2,
+                            "max": 100
+                        },
+                        "defaultValue": "ACME inc/"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id"     : 7,
+        "title"  : "Step 7",
+        "description": "System Updates",
+        "note": "",
+        "forms"  : [
+            {
+                "label": "Automatic Module Updates",
+                "required": true,
+                "fields": [
+                    {
+                        "type" : "dropdown",
+                        "name" : "automatic_module_updates",
+                        "options": [
+                            {
+                                "label": "Enabled",
+                                "value": "enabled"
+                            },
+                            {
+                                "label": "Email Only",
+                                "value": "email_only"
+                            },{
+                                "label": "Disabled",
+                                "value": "disabled"
+                            }
+                        ],
+                        "defaultValue": "disabled",
+                        "validation": {
+                            "required": true
+                        }
+                    }
+                ]
+            },
+            {
+                "label": "Automatic Module Security Updates",
+                "required": true,
+                "fields": [
+                    {
+                        "type" : "dropdown",
+                        "name" : "automatic_module_security_updates",
+                        "options": [
+                            {
+                                "label": "Enabled",
+                                "value": "enabled"
+                            },
+                            {
+                                "label": "Email Only",
+                                "value": "email_only"
+                            }
+                        ],
+                        "defaultValue": "email_only",
+                        "validation": {
+                            "required": true
+                        }
+                    }
+                ]
+            },
+            {
+                "label": "Send Security Emails For Unsigned Modules",
+                "required": true,
+                "fields": [
+                    {
+                        "type" : "dropdown",
+                        "name" : "automatic_module_updates",
+                        "options": [
+                            {
+                                "label": "Enabled",
+                                "value": "enabled"
+                            },
+                            {
+                                "label": "Disabled",
+                                "value": "disabled"
+                            }
+                        ],
+                        "defaultValue": "enabled",
+                        "validation": {
+                            "required": true
+                        }
+                    }
+                ]
+            },
+            {
+                "label": "Check for Updates every",
+                "required": true,
+                "fields": [
+                    {
+                        "type" : "dropdown",
+                        "name" : "check_for_updates_every_days",
+                        "options": [
+                            {
+                                "label": "Sunday",
+                                "value": "sunday"
+                            },
+                            {
+                                "label": "Monday",
+                                "value": "monday"
+                            },
+                            {
+                                "label": "Tuesday",
+                                "value": "tuesday"
+                            },
+                            {
+                                "label": "Wednesday",
+                                "value": "wednesday"
+                            },
+                            {
+                                "label": "Thursday",
+                                "value": "thursday"
+                            },
+                            {
+                                "label": "Friday",
+                                "value": "friday"
+                            },
+                            {
+                                "label": "Saturday",
+                                "value": "saturday"
+                            }
+                        ],
+                        "defaultValue": "friday",
+                        "validation": {
+                            "required": true
+                        }
+                    },
+                    {
+                        "name" : "check_for_updates_every_hours",
+                        "type" : "dropdown",
+                        "options": [
+                            {
+                                "label": "Between 8am to 10am",
+                                "value": "8-10"
+                            },
+                            {
+                                "label": "Between 10am to 12pm",
+                                "value": "10-12"
+                            },
+                            {
+                                "label": "Between 12pm to 2pm",
+                                "value": "12-2"
+                            }
+                        ],
+                        "defaultValue": "10-12",
+                        "validation": {
+                            "required": true
+                        }
+                    }
+                ]
             }
         ]
     }

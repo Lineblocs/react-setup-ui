@@ -179,3 +179,14 @@ button[disabled] {
     line-height: 1.5;
     font-weight: 500;
 }
+
+.next-button{
+    fill: #ffffff;
+    color: #ffffff;
+    background: #454545;
+    border-radius: 6px;
+    height: 40px;
+    width: 100px;
+    font-size: 20px;
+    cursor: pointer;
+}
