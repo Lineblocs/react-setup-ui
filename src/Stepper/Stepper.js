@@ -3,6 +3,8 @@ import BeginStep from './Begin';
 import Steps from './Steps';
 import EndStep from './End';
 import logo from './../images/new-logo-blue.png';
+import { apiService } from './Stepper.service';
+
 import './Stepper.css';
 
 
@@ -11,7 +13,9 @@ function Stepper() {
     const [currentStep, setCurrentStep] = React.useState('begin');
 
     function startStep() {
-        setCurrentStep('step');
+        apiService.getSettings().then((response) => {
+            setCurrentStep('step');
+        });
     }
 
     function endStep() {
