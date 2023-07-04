@@ -35,7 +35,7 @@ function Stepper() {
             </header>
             <div className='stepper-blocks'>
                 {currentStep && currentStep === 'begin' && <BeginStep loading={loading} startStep={startStep}/>}
-                {currentStep && currentStep === 'step' && <Steps endStep={endStep}/>}
+                {currentStep && currentStep === 'step' && <Steps endStep={endStep} settings={settings}/>}
                 {currentStep && currentStep === 'end' && <EndStep />}
             </div>
         </>

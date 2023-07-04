@@ -27,7 +27,7 @@
                             }
                         ],
                         "value": "",
-                        "defaultValue": "Amazon S3",
+                        "defaultValue": "AZURE",
                         "validation": {
                             "required": true
                         }
@@ -109,7 +109,7 @@
                 "fields": [
                     {
                         "type" : "text",
-                        "key" : "host",
+                        "key" : "smtp_host",
                         "validation": {
                             "min": 2,
                             "max": 10
@@ -125,7 +125,7 @@
                 "fields": [
                     {
                         "type" : "text",
-                        "key" : "user",
+                        "key" : "smtp_user",
                         "validation": {
                             "min": 2,
                             "max": 100
@@ -141,7 +141,7 @@
                 "fields": [
                     {
                         "type" : "password",
-                        "key" : "password",
+                        "key" : "smtp_password",
                         "validation": {
                             "min": 2,
                             "max": 10
@@ -157,7 +157,7 @@
                 "fields": [
                     {
                         "type" : "dropdown",
-                        "key" : "tls",
+                        "key" : "smtp_tls",
                         "options": [
                             {
                                 "label": "On",
@@ -190,7 +190,7 @@
                 "fields": [
                     {
                         "type" : "dropdown",
-                        "key" : "provider",
+                        "key" : "tts_provider",
                         "options": [
                             {
                                 "label": "Google cloud speech",
@@ -224,7 +224,7 @@
                             "max": 100
                         },
                         "value": "",
-                        "defaultValue": "1111"
+                        "defaultValue": "text description"
                     }
                 ]
             }
@@ -258,7 +258,7 @@
                 "fields": [
                     {
                         "type" : "password",
-                        "key" : "stripe_publishable_key",
+                        "key" : "stripe_pub_key",
                         "validation": {
                             "min": 2,
                             "max": 12
@@ -290,7 +290,7 @@
                 "fields": [
                     {
                         "type" : "password",
-                        "key" : "stripe_test_publishable_key",
+                        "key" : "stripe_test_pub_key",
                         "validation": {
                             "min": 2,
                             "max": 12

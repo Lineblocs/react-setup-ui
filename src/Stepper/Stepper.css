@@ -130,11 +130,9 @@ label {
 
 .button-setup{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     margin-top: 20px;
-    margin-right: auto;
-    margin-left: auto;
-    width: 70vh;
+    gap: 300px;
 }
 
 .next-button-color{

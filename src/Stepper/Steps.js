@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import './Stepper.css';
-import stepsData from'./form.json';
+import stepsData from './form.json';
 import { ReactComponent as LeftChevron } from './../icons/left-chevron.svg';
 import { ReactComponent as EditIcon } from './../icons/edit-icon.svg';
 
-function Step({ step, currentStep, form, register, errors, handleSubmit, onSubmit }) {
+function Step({ step, currentStep, form, register, errors, handleSubmit, onSubmit, settings}) {
   return step === currentStep ? (
       <>
         <h2 className='title-center'>{form.title}</h2>
@@ -20,7 +20,7 @@ function Step({ step, currentStep, form, register, errors, handleSubmit, onSubmi
                   {field.fields.map((nestedField, nestedIndex) => {
                     return (
                       <div key={nestedIndex} style={{ flexBasis: '50%' }}>
-                        {generateFormField(nestedField, register, errors, nestedField.key)}
+                        {GenerateFormField(nestedField, register, errors, nestedField.key, settings)}
                       </div>
                     );
                   })}
@@ -33,7 +33,14 @@ function Step({ step, currentStep, form, register, errors, handleSubmit, onSubmi
   ) : null;
 }
 
-const generateFormField = (nestedField, register, errors, fieldName) => {
+const GenerateFormField = (nestedField, register, errors, fieldName, settings) => {
+  const matchedValue = findValueForKey(nestedField.key, settings);
+  const initialValue = matchedValue || nestedField.value;
+
+  useEffect(() => {
+
+  }, [])
+
   switch (nestedField.type) {
     case 'text':
     case 'password':
@@ -43,7 +50,7 @@ const generateFormField = (nestedField, register, errors, fieldName) => {
           <input
             name={fieldName}
             type={nestedField.type}
-            defaultValue={nestedField.defaultValue}
+            value={nestedField.value || nestedField.defaultValue}
             {...register(fieldName, { required: nestedField.required })}
           />
           {errors && errors[fieldName] && <p className='error-msg'>This field is required</p>}
@@ -54,7 +61,7 @@ const generateFormField = (nestedField, register, errors, fieldName) => {
         <div key={fieldName}>
           <textarea
             name={fieldName}
-            defaultValue={nestedField.defaultValue}
+            value={nestedField.value || nestedField.defaultValue}
             {...register(fieldName, { required: nestedField.required, minLength: nestedField.validation.min, maxLength: nestedField.validation.max })}
           />
           {errors && errors[fieldName] && <p className='error-msg'>This field is required with min {nestedField.validation.min} and max {nestedField.validation.max} characters</p>}
@@ -63,7 +70,7 @@ const generateFormField = (nestedField, register, errors, fieldName) => {
     case 'dropdown':
       return (
         <div key={fieldName}>
-          <select name={fieldName} {...register(fieldName, nestedField.validation.required)} defaultValue={nestedField.defaultValue}>
+          <select name={fieldName} {...register(fieldName, nestedField.validation.required)} value={nestedField.value || nestedField.defaultValue}>
             {nestedField.options.map((option, index) => (
               <option key={index} value={option.value}>
                 {option.label}
@@ -78,6 +85,9 @@ const generateFormField = (nestedField, register, errors, fieldName) => {
   }
 };
 
+function findValueForKey(key, settings) {
+  return settings[key];
+}
 
 function Stepper(props) {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -120,7 +130,7 @@ function Stepper(props) {
           ))}
         </div>
         {stepsData.map((step) => (
-          <Step key={step.id} step={step.id} currentStep={currentStep} form={step} register={register} errors={errors} handleSubmit={handleSubmit}  onSubmit={onSubmit}/>
+          <Step key={step.id} step={step.id} currentStep={currentStep} form={step} register={register} errors={errors} handleSubmit={handleSubmit}  onSubmit={onSubmit} settings={props.settings}/>
         ))}
       </div>
       <div className='button-setup'>
