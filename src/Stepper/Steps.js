@@ -20,7 +20,7 @@ function Step({ step, currentStep, form, register, errors, handleSubmit, onSubmi
                   {field.fields.map((nestedField, nestedIndex) => {
                     return (
                       <div key={nestedIndex} style={{ flexBasis: '50%' }}>
-                        {generateFormField(nestedField, register, errors, nestedField.name)}
+                        {generateFormField(nestedField, register, errors, nestedField.key)}
                       </div>
                     );
                   })}

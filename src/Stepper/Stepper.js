@@ -11,9 +11,15 @@ import './Stepper.css';
 function Stepper() {
 
     const [currentStep, setCurrentStep] = React.useState('begin');
+    const [settings, setSettings]       = React.useState({});
+    const [loading, setLoading]         = React.useState(false);
 
     function startStep() {
+        if (loading) return;
+        setLoading(true);
         apiService.getSettings().then((response) => {
+            console.log(response);
+            setSettings(response);
             setCurrentStep('step');
         });
     }
@@ -28,7 +34,7 @@ function Stepper() {
                 <img className='logo-src' src={logo} alt='Lineblocs' />
             </header>
             <div className='stepper-blocks'>
-                {currentStep && currentStep === 'begin' && <BeginStep startStep={startStep}/>}
+                {currentStep && currentStep === 'begin' && <BeginStep loading={loading} startStep={startStep}/>}
                 {currentStep && currentStep === 'step' && <Steps endStep={endStep}/>}
                 {currentStep && currentStep === 'end' && <EndStep />}
             </div>
