@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import './Stepper.css';
 import stepsData from './form.json';
 import { ReactComponent as LeftChevron } from './../icons/left-chevron.svg';
 import { ReactComponent as EditIcon } from './../icons/edit-icon.svg';
+import { apiService } from './Stepper.service';
 
 function Step({ step, currentStep, form, register, errors, handleSubmit, onSubmit, settings}) {
   return step === currentStep ? (
@@ -11,7 +12,7 @@ function Step({ step, currentStep, form, register, errors, handleSubmit, onSubmi
         <h2 className='title-center'>{form.title}</h2>
         <p className='title-center'>{form.description}</p>
         {form.note && <p className='note-storage'>{form.note}</p>}
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit((data) => {onSubmit(data);})}>
           {form.forms.map((field, index) => {
             return (
               <div key={index}>
@@ -34,12 +35,8 @@ function Step({ step, currentStep, form, register, errors, handleSubmit, onSubmi
 }
 
 const GenerateFormField = (nestedField, register, errors, fieldName, settings) => {
-  const matchedValue = findValueForKey(nestedField.key, settings);
-  const initialValue = matchedValue || nestedField.value;
-
-  useEffect(() => {
-
-  }, [])
+  const matchedValue = findValueByKey(nestedField.key, settings);
+  const initialValue = matchedValue || nestedField.value || nestedField.defaultValue;
 
   switch (nestedField.type) {
     case 'text':
@@ -50,7 +47,7 @@ const GenerateFormField = (nestedField, register, errors, fieldName, settings) =
           <input
             name={fieldName}
             type={nestedField.type}
-            value={nestedField.value || nestedField.defaultValue}
+            defaultValue={initialValue}
             {...register(fieldName, { required: nestedField.required })}
           />
           {errors && errors[fieldName] && <p className='error-msg'>This field is required</p>}
@@ -61,7 +58,7 @@ const GenerateFormField = (nestedField, register, errors, fieldName, settings) =
         <div key={fieldName}>
           <textarea
             name={fieldName}
-            value={nestedField.value || nestedField.defaultValue}
+            defaultValue={initialValue}
             {...register(fieldName, { required: nestedField.required, minLength: nestedField.validation.min, maxLength: nestedField.validation.max })}
           />
           {errors && errors[fieldName] && <p className='error-msg'>This field is required with min {nestedField.validation.min} and max {nestedField.validation.max} characters</p>}
@@ -70,7 +67,7 @@ const GenerateFormField = (nestedField, register, errors, fieldName, settings) =
     case 'dropdown':
       return (
         <div key={fieldName}>
-          <select name={fieldName} {...register(fieldName, nestedField.validation.required)} value={nestedField.value || nestedField.defaultValue}>
+          <select name={fieldName} {...register(fieldName, nestedField.validation.required)} defaultValue={initialValue}>
             {nestedField.options.map((option, index) => (
               <option key={index} value={option.value}>
                 {option.label}
@@ -85,7 +82,7 @@ const GenerateFormField = (nestedField, register, errors, fieldName, settings) =
   }
 };
 
-function findValueForKey(key, settings) {
+function findValueByKey(key, settings) {
   return settings[key];
 }
 
@@ -113,7 +110,15 @@ function Stepper(props) {
   };
 
   const onSubmit = (data) => {
-    console.log(data);
+    const keysMatched = Object.keys(props.settings);
+    const filteredData = Object.keys(data)
+      .filter(key => keysMatched.includes(key))
+      .reduce((obj, key) => {
+        obj[key] = data[key];
+        return obj;
+      }, {});
+    apiService.saveSettings(filteredData);
+    props.endStep();
   };
 
   return (
@@ -138,7 +143,7 @@ function Stepper(props) {
         {currentStep < totalSteps ? 
           <button className='next-button' onClick={handleSubmit(nextStep)}>Next</button> 
           : 
-          <button className='next-button' onClick={props.endStep} type="submit">Submit</button>
+          <button className='next-button' onClick={handleSubmit(onSubmit)} type="button">Submit</button>
         }
       </div>
     </div>
