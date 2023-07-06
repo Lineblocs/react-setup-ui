@@ -91,9 +91,10 @@ function Stepper(props) {
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = stepsData.length;
 
-  const nextStep = () => {
+  const nextStep = (data) => {
     if (Object.keys(errors).length === 0 && currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
+      saveSettings(data)
     }
   };
 
@@ -109,7 +110,7 @@ function Stepper(props) {
     }
   };
 
-  const onSubmit = (data) => {
+  const saveSettings = (data) => {
     const keysMatched = Object.keys(props.settings);
     const filteredData = Object.keys(data)
       .filter(key => keysMatched.includes(key))
@@ -118,6 +119,10 @@ function Stepper(props) {
         return obj;
       }, {});
     apiService.saveSettings(filteredData);
+  }
+
+  const onSubmit = (data) => {
+    saveSettings(data)
     props.endStep();
   };
 

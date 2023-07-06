@@ -195,6 +195,7 @@ button[disabled] {
 
 .begin-steps, .end-steps {
     padding: 0 1.5rem;
+    text-align: center;
 }
 
 .begin-steps .description, .end-steps .description {

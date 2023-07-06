@@ -14,14 +14,19 @@ function Stepper() {
     const [settings, setSettings]       = React.useState({});
     const [loading, setLoading]         = React.useState(false);
 
-    function startStep() {
-        if (loading) return;
+    React.useEffect(() => {
         setLoading(true);
         apiService.getSettings().then((response) => {
             console.log(response);
             setSettings(response);
-            setCurrentStep('step');
+            // if (response.setup_complete) endStep();
+            setLoading(false);
         });
+    }, []);
+
+    function startStep() {
+        if (loading) return;
+        setCurrentStep('step');
     }
 
     function endStep() {
