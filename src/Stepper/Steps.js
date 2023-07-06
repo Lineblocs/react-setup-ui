@@ -6,15 +6,19 @@ import { ReactComponent as LeftChevron } from './../icons/left-chevron.svg';
 import { ReactComponent as EditIcon } from './../icons/edit-icon.svg';
 import { apiService } from './Stepper.service';
 
-function Step({ step, currentStep, form, register, errors, handleSubmit, onSubmit, settings}) {
+function Step({ step, currentStep, form, onSubmit, settings,register, errors, handleSubmit, watch}) {
+  const [currentStorageProvider, setCurrentStorageProvider] = useState(settings.storage_provider);
+  const watchedStorageProvider = watch('storage_provider', currentStorageProvider);
   return step === currentStep ? (
-      <>
-        <h2 className='title-center'>{form.title}</h2>
-        <p className='title-center'>{form.description}</p>
-        {form.note && <p className='note-storage'>{form.note}</p>}
+    <>
+      <h2 className='title-center'>{form.title}</h2>
+      <p className='title-center'>{form.description}</p>
+      {form.note && <p className='note-storage'>{form.note}</p>}
         <form onSubmit={handleSubmit((data) => {onSubmit(data);})}>
           {form.forms.map((field, index) => {
-            return (
+            const showConditionMet = !field.showCondition || field.showCondition.value === watchedStorageProvider;
+
+            return showConditionMet && (
               <div key={index}>
                 <label>{field.label}{field.required && <span style={{ color: 'red' }}>*</span>}</label>
                 <div style={field.fields.length > 1 ? { display: 'flex', gap: '12px' } : {}}>
@@ -30,7 +34,7 @@ function Step({ step, currentStep, form, register, errors, handleSubmit, onSubmi
             );
           })}
         </form>
-      </>
+    </>
   ) : null;
 }
 
@@ -87,7 +91,7 @@ function findValueByKey(key, settings) {
 }
 
 function Stepper(props) {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = stepsData.length;
 
@@ -122,7 +126,7 @@ function Stepper(props) {
   }
 
   const onSubmit = (data) => {
-    saveSettings(data)
+    saveSettings(data);
     props.endStep();
   };
 
@@ -140,7 +144,18 @@ function Stepper(props) {
           ))}
         </div>
         {stepsData.map((step) => (
-          <Step key={step.id} step={step.id} currentStep={currentStep} form={step} register={register} errors={errors} handleSubmit={handleSubmit}  onSubmit={onSubmit} settings={props.settings}/>
+          <Step 
+            key={step.id} 
+            step={step.id} 
+            currentStep={currentStep} 
+            form={step} 
+            register={register} 
+            errors={errors} 
+            handleSubmit={handleSubmit} 
+            watch={watch} 
+            onSubmit={onSubmit} 
+            settings={props.settings}
+          />
         ))}
       </div>
       <div className='button-setup'>

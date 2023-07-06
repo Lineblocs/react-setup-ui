@@ -23,7 +23,7 @@
                             },
                             {
                                 "label": "Microsoft Azure",
-                                "value": "AZURE"
+                                "value": "Azure"
                             }
                         ],
                         "value": "",
@@ -37,6 +37,10 @@
             {
                 "label": "AWS access Key",
                 "required": true,
+                "showCondition": {
+                    "key": "storage_provider",
+                    "value": "Amazon S3"
+                },
                 "fields": [
                     {
                         "type" : "password",
@@ -53,6 +57,10 @@
             {
                 "label": "AWS secret access Key",
                 "required": true,
+                "showCondition": {
+                    "key": "storage_provider",
+                    "value": "Amazon S3"
+                },
                 "fields": [
                     {
                         "type" : "password",
@@ -69,10 +77,160 @@
             {
                 "label": "AWS region",
                 "required": true,
+                "showCondition": {
+                    "key": "storage_provider",
+                    "value": "Amazon S3"
+                },
                 "fields": [
                     {
                         "type" : "dropdown",
                         "key" : "aws_region",
+                        "options": [
+                            {
+                                "label": "US East (N. Virginia)",
+                                "value": "us-east-1"
+                            },
+                            {
+                                "label": "US East (Ohio)",
+                                "value": "us-east-2"
+                            },
+                            {
+                                "label": "US West (N. California)",
+                                "value": "us-west-1"
+                            }
+                        ],
+                        "value": "",
+                        "defaultValue": "us-east-1",
+                        "validation": {
+                            "required": true
+                        }
+                    }
+                ]
+            },
+            {
+                "label": "GCS access Key",
+                "required": true,
+                "showCondition": {
+                    "key": "storage_provider",
+                    "value": "Google Cloud Storage"
+                },
+                "fields": [
+                    {
+                        "type" : "password",
+                        "key" : "gcs_access_key_id",
+                        "validation": {
+                            "min": 2,
+                            "max": 16
+                        },
+                        "value": "",
+                        "defaultValue": "dsfdsfsd"
+                    }
+                ]
+            },
+            {
+                "label": "GCS secret access Key",
+                "required": true,
+                "showCondition": {
+                    "key": "storage_provider",
+                    "value": "Google Cloud Storage"
+                },
+                "fields": [
+                    {
+                        "type" : "password",
+                        "key" : "gcs_secret_access_key",
+                        "validation": {
+                            "min": 2,
+                            "max": 16
+                        },
+                        "value": "",
+                        "defaultValue": "dsfdsfsd"
+                    }
+                ]
+            },
+            {
+                "label": "GCS region",
+                "required": true,
+                "showCondition": {
+                    "key": "storage_provider",
+                    "value": "Google Cloud Storage"
+                },
+                "fields": [
+                    {
+                        "type" : "dropdown",
+                        "key" : "gcs_region",
+                        "options": [
+                            {
+                                "label": "US East (N. Virginia)",
+                                "value": "us-east-1"
+                            },
+                            {
+                                "label": "US East (Ohio)",
+                                "value": "us-east-2"
+                            },
+                            {
+                                "label": "US West (N. California)",
+                                "value": "us-west-1"
+                            }
+                        ],
+                        "value": "",
+                        "defaultValue": "us-east-1",
+                        "validation": {
+                            "required": true
+                        }
+                    }
+                ]
+            },
+            {
+                "label": "Microsoft Azure access Key",
+                "required": true,
+                "showCondition": {
+                    "key": "storage_provider",
+                    "value": "Azure"
+                },
+                "fields": [
+                    {
+                        "type" : "password",
+                        "key" : "azure_access_key_id",
+                        "validation": {
+                            "min": 2,
+                            "max": 16
+                        },
+                        "value": "",
+                        "defaultValue": "dsfdsfsd"
+                    }
+                ]
+            },
+            {
+                "label": "Microsoft Azure secret access Key",
+                "required": true,
+                "showCondition": {
+                    "key": "storage_provider",
+                    "value": "Azure"
+                },
+                "fields": [
+                    {
+                        "type" : "password",
+                        "key" : "azure_secret_access_key",
+                        "validation": {
+                            "min": 2,
+                            "max": 16
+                        },
+                        "value": "",
+                        "defaultValue": "dsfdsfsd"
+                    }
+                ]
+            },
+            {
+                "label": "Microsoft Azure region",
+                "required": true,
+                "showCondition": {
+                    "key": "storage_provider",
+                    "value": "Azure"
+                },
+                "fields": [
+                    {
+                        "type" : "dropdown",
+                        "key" : "azure_region",
                         "options": [
                             {
                                 "label": "US East (N. Virginia)",
