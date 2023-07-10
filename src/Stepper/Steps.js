@@ -126,6 +126,20 @@ function Stepper(props) {
   }
 
   const onSubmit = (data) => {
+    // Determine which fields to reset based on the selected storage provider
+    let fieldsToReset = [];
+    if (data.storage_provider === 'Amazon S3') {
+      fieldsToReset = ['gcs_access_key_id', 'gcs_secret_access_key', 'gcs_region', 'azure_access_key_id', 'azure_secret_access_key', 'azure_region'];
+    } else if (data.storage_provider === 'Google Cloud Storage') {
+      fieldsToReset = ['aws_access_key_id', 'aws_secret_access_key', 'aws_region', 'azure_access_key_id', 'azure_secret_access_key', 'azure_region'];
+    } else if (data.storage_provider === 'Azure') {
+      fieldsToReset = ['aws_access_key_id', 'aws_secret_access_key', 'aws_region', 'gcs_access_key_id', 'gcs_secret_access_key', 'gcs_region'];
+    }
+
+    // Reset the irrelevant fields
+    for (let key of fieldsToReset) {
+      data[key] = '';
+    }
     saveSettings(data);
     props.endStep();
   };
