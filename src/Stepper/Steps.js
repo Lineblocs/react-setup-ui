@@ -1,19 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import './Stepper.css';
 import stepsData from './form.json';
 import { ReactComponent as LeftChevron } from './../icons/left-chevron.svg';
 import { ReactComponent as EditIcon } from './../icons/edit-icon.svg';
+import { apiService } from './Stepper.service';
 
-function Step({ step, currentStep, form, register, errors, handleSubmit, onSubmit, settings}) {
+function Step({ step, currentStep, form, onSubmit, settings,register, errors, handleSubmit, watch}) {
+  const [currentStorageProvider, setCurrentStorageProvider] = useState(settings.storage_provider);
+  const watchedStorageProvider = watch('storage_provider', currentStorageProvider);
   return step === currentStep ? (
-      <>
-        <h2 className='title-center'>{form.title}</h2>
-        <p className='title-center'>{form.description}</p>
-        {form.note && <p className='note-storage'>{form.note}</p>}
-        <form onSubmit={handleSubmit(onSubmit)}>
+    <>
+      <h2 className='title-center'>{form.title}</h2>
+      <p className='title-center'>{form.description}</p>
+      {form.note && <p className='note-storage'>{form.note}</p>}
+        <form onSubmit={handleSubmit((data) => {onSubmit(data);})}>
           {form.forms.map((field, index) => {
-            return (
+            const showConditionMet = !field.showCondition || field.showCondition.value === watchedStorageProvider;
+
+            return showConditionMet && (
               <div key={index}>
                 <label>{field.label}{field.required && <span style={{ color: 'red' }}>*</span>}</label>
                 <div style={field.fields.length > 1 ? { display: 'flex', gap: '12px' } : {}}>
@@ -29,17 +34,13 @@ function Step({ step, currentStep, form, register, errors, handleSubmit, onSubmi
             );
           })}
         </form>
-      </>
+    </>
   ) : null;
 }
 
 const GenerateFormField = (nestedField, register, errors, fieldName, settings) => {
-  const matchedValue = findValueForKey(nestedField.key, settings);
-  const initialValue = matchedValue || nestedField.value;
-
-  useEffect(() => {
-
-  }, [])
+  const matchedValue = findValueByKey(nestedField.key, settings);
+  const initialValue = matchedValue || nestedField.value || nestedField.defaultValue;
 
   switch (nestedField.type) {
     case 'text':
@@ -50,7 +51,7 @@ const GenerateFormField = (nestedField, register, errors, fieldName, settings) =
           <input
             name={fieldName}
             type={nestedField.type}
-            value={nestedField.value || nestedField.defaultValue}
+            defaultValue={initialValue}
             {...register(fieldName, { required: nestedField.required })}
           />
           {errors && errors[fieldName] && <p className='error-msg'>This field is required</p>}
@@ -61,7 +62,7 @@ const GenerateFormField = (nestedField, register, errors, fieldName, settings) =
         <div key={fieldName}>
           <textarea
             name={fieldName}
-            value={nestedField.value || nestedField.defaultValue}
+            defaultValue={initialValue}
             {...register(fieldName, { required: nestedField.required, minLength: nestedField.validation.min, maxLength: nestedField.validation.max })}
           />
           {errors && errors[fieldName] && <p className='error-msg'>This field is required with min {nestedField.validation.min} and max {nestedField.validation.max} characters</p>}
@@ -70,7 +71,7 @@ const GenerateFormField = (nestedField, register, errors, fieldName, settings) =
     case 'dropdown':
       return (
         <div key={fieldName}>
-          <select name={fieldName} {...register(fieldName, nestedField.validation.required)} value={nestedField.value || nestedField.defaultValue}>
+          <select name={fieldName} {...register(fieldName, nestedField.validation.required)} defaultValue={initialValue}>
             {nestedField.options.map((option, index) => (
               <option key={index} value={option.value}>
                 {option.label}
@@ -85,18 +86,19 @@ const GenerateFormField = (nestedField, register, errors, fieldName, settings) =
   }
 };
 
-function findValueForKey(key, settings) {
+function findValueByKey(key, settings) {
   return settings[key];
 }
 
 function Stepper(props) {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = stepsData.length;
 
-  const nextStep = () => {
+  const nextStep = (data) => {
     if (Object.keys(errors).length === 0 && currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
+      saveSettings(data)
     }
   };
 
@@ -112,8 +114,34 @@ function Stepper(props) {
     }
   };
 
+  const saveSettings = (data) => {
+    const keysMatched = Object.keys(props.settings);
+    const filteredData = Object.keys(data)
+      .filter(key => keysMatched.includes(key))
+      .reduce((obj, key) => {
+        obj[key] = data[key];
+        return obj;
+      }, {});
+    apiService.saveSettings(filteredData);
+  }
+
   const onSubmit = (data) => {
-    console.log(data);
+    // Determine which fields to reset based on the selected storage provider
+    let fieldsToReset = [];
+    if (data.storage_provider === 'Amazon S3') {
+      fieldsToReset = ['gcs_access_key_id', 'gcs_secret_access_key', 'gcs_region', 'azure_access_key_id', 'azure_secret_access_key', 'azure_region'];
+    } else if (data.storage_provider === 'Google Cloud Storage') {
+      fieldsToReset = ['aws_access_key_id', 'aws_secret_access_key', 'aws_region', 'azure_access_key_id', 'azure_secret_access_key', 'azure_region'];
+    } else if (data.storage_provider === 'Azure') {
+      fieldsToReset = ['aws_access_key_id', 'aws_secret_access_key', 'aws_region', 'gcs_access_key_id', 'gcs_secret_access_key', 'gcs_region'];
+    }
+
+    // Reset the irrelevant fields
+    for (let key of fieldsToReset) {
+      data[key] = '';
+    }
+    saveSettings(data);
+    props.endStep();
   };
 
   return (
@@ -130,7 +158,18 @@ function Stepper(props) {
           ))}
         </div>
         {stepsData.map((step) => (
-          <Step key={step.id} step={step.id} currentStep={currentStep} form={step} register={register} errors={errors} handleSubmit={handleSubmit}  onSubmit={onSubmit} settings={props.settings}/>
+          <Step 
+            key={step.id} 
+            step={step.id} 
+            currentStep={currentStep} 
+            form={step} 
+            register={register} 
+            errors={errors} 
+            handleSubmit={handleSubmit} 
+            watch={watch} 
+            onSubmit={onSubmit} 
+            settings={props.settings}
+          />
         ))}
       </div>
       <div className='button-setup'>
@@ -138,7 +177,7 @@ function Stepper(props) {
         {currentStep < totalSteps ? 
           <button className='next-button' onClick={handleSubmit(nextStep)}>Next</button> 
           : 
-          <button className='next-button' onClick={props.endStep} type="submit">Submit</button>
+          <button className='next-button' onClick={handleSubmit(onSubmit)} type="button">Submit</button>
         }
       </div>
     </div>
